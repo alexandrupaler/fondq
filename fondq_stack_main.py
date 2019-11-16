@@ -13,7 +13,7 @@ from cnotopt import CNOTOptimizer, ReplaceHadamards
 Start mapping and optimisation
 """
 qubit_count = 2
-circuit_sample_count = 10
+# circuit_sample_count = 10
 
 #Set up input and output qubits.
 (input_qubits, output_qubit) = set_io_qubits(qubit_count)

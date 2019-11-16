@@ -27,7 +27,7 @@ class FondQDevice(cirq.Device):
         if not isinstance(operation, ops.GateOperation):
             raise TypeError("{!r} is not a gate operation.".format(operation))
 
-        if self.is_lisbon28_device_operation(operation):
+        if self.is_fondq_device_gate(operation):
             return operation
 
         if isinstance(operation.gate, (ops.XPowGate)):
@@ -46,7 +46,7 @@ class FondQDevice(cirq.Device):
             #   -> see cirq.CCXPowGate._decompose
             # afterwards the CCZ is decomposed into CNOT and RZ
             #   -> see cirq.CCZPowGate._decompose
-            return cirq.decompose(operation, keep=self.is_lisbon28_device_operation)
+            return cirq.decompose(operation, keep=self.is_fondq_device_gate)
 
         raise TypeError("Don't know how to work with {!r}. "
                         "It isn't a native Lisbon28Device operation, "
@@ -54,7 +54,13 @@ class FondQDevice(cirq.Device):
         #
         # return operation
 
-    def is_lisbon28_device_operation(self, op):
+    def is_fondq_device_gate(self, op):
+        """
+        Check if the gate is from the gate set supported by the device.
+        Exponents are not checked.
+        :param op:
+        :return:
+        """
         to_keep = isinstance(op.gate, (
             ops.CNotPowGate,
             ops.ZPowGate,
@@ -66,7 +72,7 @@ class FondQDevice(cirq.Device):
         if not isinstance(operation, cirq.GateOperation):
             raise ValueError('{!r} is not a supported operation'.format(operation))
 
-        if not self.is_lisbon28_device_operation(operation):
+        if not self.is_fondq_device_gate(operation):
             raise ValueError('{!r} is not a supported gate'.format(operation.gate))
 
         # here we check connectivity?
