@@ -49,7 +49,7 @@ class FondQDevice(cirq.Device):
             return cirq.decompose(operation, keep=self.is_fondq_device_gate)
 
         raise TypeError("Don't know how to work with {!r}. "
-                        "It isn't a native Lisbon28Device operation, "
+                        "It isn't a native FondqDevice operation, "
                         .format(operation.gate))
         #
         # return operation

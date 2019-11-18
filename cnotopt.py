@@ -10,13 +10,13 @@ class ReplaceHadamards(cirq.PointOptimizer):
             return None
 
         n_idx = circuit.next_moment_operating_on(op.qubits, index + 1)
-        if n_idx is None or n_idx != index + 1:
+        if n_idx is None:
             return None
 
         next_op = circuit.operation_at(op.qubits[0], n_idx)
 
         if next_op.gate == cirq.H:
-            return cirq.PointOptimizationSummary(clear_span= 2,
+            return cirq.PointOptimizationSummary(clear_span= n_idx - index + 1,
                                             clear_qubits=op.qubits,
                                             new_operations=[])# Two opposite rotations are erased
 

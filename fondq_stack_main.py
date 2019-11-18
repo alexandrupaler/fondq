@@ -33,28 +33,26 @@ circuit = cirq.Circuit(
      ,device=FondQDevice(7, 4)
 )
 print(circuit)
-#
+print("\n")
+
 # Make sure that the Hadamards are next to the CNOT
 circuit_earliest = cirq.Circuit(circuit.all_operations())
-# print("\n\n")
-# print(circuit_earliest)
-# #
-print("\nOptimize the CNOTs")
+#
+print("Optimize the CNOTs\n")
 cnotopt = CNOTOptimizer()
 cnotopt.optimize_circuit(circuit_earliest)
 print(circuit_earliest)
 # #
-print("\nReplace Hadamards")
+print("Replace Hadamards\n")
 hopt = ReplaceHadamards()
 hopt.optimize_circuit(circuit_earliest)
 print(circuit_earliest)
 #
-print("\nRemove empty moments")
-remempty = cirq.DropEmptyMoments()
-remempty.optimize_circuit(circuit_earliest)
-print(circuit_earliest)
-#
-print("\n")
-
+print("Reinsert all the gates\n")
 circuit_earliest = cirq.Circuit(circuit_earliest.all_operations())
 print(circuit_earliest)
+
+# print("\nRemove empty moments")
+# remempty = cirq.DropEmptyMoments()
+# remempty.optimize_circuit(circuit_earliest)
+# print(circuit_earliest)
