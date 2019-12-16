@@ -31,7 +31,7 @@ class CNOTOptimizer(cirq.PointOptimizer):
     def optimization_at(self, circuit, index, op):
 
         # Is the gate an X gate?
-        if index > 0 and isinstance(op, cirq.GateOperation) and (op.gate == cirq.CNOT):
+        if isinstance(op, cirq.GateOperation) and (op.gate == cirq.CNOT):
 
             # print("found a CNOT")
 
