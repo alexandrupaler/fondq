@@ -10,67 +10,25 @@ diagrams" https://arxiv.org/abs/1811.06011
 
 import cirq
 
+from icm.split_qubit import SplitQubit
 from icm.icm_operation_id import OperationId
 
-class SplitQubit(cirq.NamedQubit):
-
-    # Static nr_ancilla
-    nr_ancilla = -1
-
-
-    def __init__(self, name):
-        super().__init__(name)
-
-        self.children = (None, None)
-
-        self.threshold = OperationId()
-
-    def get_latest_ref(self, operation_id):
-
-        # this wire has not been split
-        if self.children == (None, None):
-            return self
-
-        n_ref = self
-        while n_ref.children != (None, None):
-            # Decide based on the threshold
-            if n_ref.threshold >= operation_id:
-                n_ref = self.children[0]
-            else:
-                n_ref = self.children[1]
-
-        return n_ref
-
-    def split_this_wire(self, operation_id):
-        # It can happen that the reference is too old
-        current_wire = self.get_latest_ref(operation_id)
-
-        # The wire receives a threshold for latter updates
-        current_wire.threshold = operation_id
-
-        # It is a new wire, but keep the old name
-        n_child_0 = SplitQubit(current_wire.name)
-
-        # It is a new wire, that is introduced and gets a new name
-        SplitQubit.nr_ancilla += 1
-        n_child_1 = SplitQubit("_anc_{0}".format(SplitQubit.nr_ancilla))
-
-        # Update the children tuple of this wire
-        current_wire.children = (n_child_0, n_child_1)
-
-        # Return the children as a tuple
-        return current_wire.children
-
-
 def decomp_to_icm(cirq_operation):
-    # TODO:
+    """
+
+    :param cirq_operation:
+    :return:
+    """
 
     new_op_id = cirq_operation.icm_op_id.add_decomp_level()
 
     # Assume for the moment that these are only single qubit operations
     new_wires = cirq_operation.qubits[0].split_this_wire(new_op_id)
 
-    print("qubit is ", cirq_operation.qubits[0])
+    """
+        In this version the type of the gate, and the initialisation 
+        of the qubits is not considered.
+    """
 
     # Create the cnot
     cnot = cirq.CNOT(new_wires[0], new_wires[1])
@@ -86,12 +44,29 @@ def decomp_to_icm(cirq_operation):
     return [cnot, meas]
 
 
-def keep_icm(op):
-    # TODO: mai calumea
-    if isinstance(op.gate, (cirq.CNotPowGate, cirq.MeasurementGate)):
+def keep_icm(cirq_operation):
+    """
+
+    :param cirq_operation:
+    :return:
+    """
+    """
+        Decompose if the operation is from the set of the ones to keep
+    """
+    if isinstance(cirq_operation.gate, (cirq.CNotPowGate, cirq.MeasurementGate)):
+        return True
+
+    """
+        Keep the operation if:
+        * this is an operation that should be decomposed
+        AND
+        * is not marked for decomposition
+    """
+    if not flags.is_op_with_op_id(cirq_operation, cirq_operation.gate):
         return True
 
     return False
+
 
 import icm.icm_flag_manipulations as flags
 a = SplitQubit("a")

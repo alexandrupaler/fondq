@@ -56,3 +56,4 @@ print("\nRemove empty moments")
 remempty = cirq.DropEmptyMoments()
 remempty.optimize_circuit(circuit_earliest)
 print(circuit_earliest)
+
