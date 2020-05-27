@@ -32,6 +32,8 @@ a) removing Hadamard gates which appear in a sequence (`H*H=I`); b) reversing
 the direction of CNOTs surrounded by Hadamards. The optimizers are implemented
  for pedagogical reasons, and the results are not the best one could achieve.
 
+**2020. The fondq project is improved at the
+ [Google Cirq Tutorials](https://sites.google.com/view/cirq-for-nisq/)**
 
-**The fondq project is a result of the
- [Google Cirq bootcamps](https://sites.google.com/view/cirq-bootcamps/)**
+**2019.** The fondq project resulted from the
+ [Google Cirq Bootcamps](https://sites.google.com/view/cirq-bootcamps/)
