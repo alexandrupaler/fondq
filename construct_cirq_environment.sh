@@ -5,4 +5,4 @@ echo "Activate venv ..."
 source .venv/bin/activate
 
 echo "Install Cirq in venv ..."
-python3 -m pip install -r requirements.txt
+python3 -m pip install -U -r requirements.txt
