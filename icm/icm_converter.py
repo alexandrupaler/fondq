@@ -62,7 +62,7 @@ def keep_icm(cirq_operation):
         AND
         * is not marked for decomposition
     """
-    if not flags.is_op_with_op_id(cirq_operation, cirq_operation.gate):
+    if not flags.is_op_with_op_id(cirq_operation, [cirq_operation.gate]):
         return True
 
     return False
