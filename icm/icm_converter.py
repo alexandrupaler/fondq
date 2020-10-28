@@ -9,9 +9,7 @@ diagrams" https://arxiv.org/abs/1811.06011
 """
 
 import cirq
-
-from icm.split_qubit import SplitQubit
-from icm.icm_operation_id import OperationId
+from . import icm_flag_manipulations
 
 def decomp_to_icm(cirq_operation):
     """
@@ -62,22 +60,21 @@ def keep_icm(cirq_operation):
         AND
         * is not marked for decomposition
     """
-    if not flags.is_op_with_op_id(cirq_operation, [cirq_operation.gate]):
+    if not icm_flag_manipulations.is_op_with_op_id(cirq_operation, [cirq_operation.gate]):
         return True
 
     return False
 
-
-import icm.icm_flag_manipulations as flags
-a = SplitQubit("a")
-b = SplitQubit("b")
-
-mycircuit = cirq.Circuit(cirq.T.on(a), cirq.T.on(b), cirq.CNOT.on(a,b), cirq.S.on(a))
-flags.add_op_ids(mycircuit, [cirq.T, cirq.S])
-
-print(mycircuit)
-
-icm_circuit = cirq.Circuit(cirq.decompose(mycircuit,
-                                          intercepting_decomposer=decomp_to_icm,
-                                          keep = keep_icm))
-print(icm_circuit)
+# import icm.icm_flag_manipulations as flags
+# a = SplitQubit("a")
+# b = SplitQubit("b")
+#
+# mycircuit = cirq.Circuit(cirq.T.on(a), cirq.T.on(b), cirq.CNOT.on(a,b), cirq.S.on(a))
+# flags.add_op_ids(mycircuit, [cirq.T, cirq.S])
+#
+# print(mycircuit)
+#
+# icm_circuit = cirq.Circuit(cirq.decompose(mycircuit,
+#                                           intercepting_decomposer=decomp_to_icm,
+#                                           keep = keep_icm))
+# print(icm_circuit)
